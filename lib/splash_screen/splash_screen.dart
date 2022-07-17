@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/hazob_form/hazob_page.dart';
 import 'package:hazob_card_app/routes/routes.dart';
-import 'package:hazob_card_app/main.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

@@ -4,6 +4,7 @@ import 'package:hazob_card_app/splash_screen/splash_screen.dart';
 import 'routes/routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

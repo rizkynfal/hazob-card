@@ -1,5 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/hazob_form/akses.dart';
+import 'package:hazob_card_app/hazob_form/detail_hazob.dart';
+import 'package:hazob_card_app/hazob_form/kamera.dart';
 import 'package:hazob_card_app/hazob_form/penyimpanan.dart';
 import 'package:hazob_card_app/hazob_form/perlengkapan_kerja.dart';
 import 'package:hazob_card_app/hazob_form/perlindungan_diri.dart';
@@ -8,6 +11,8 @@ import 'package:hazob_card_app/hazob_form/suasana_lingkungan.dart';
 
 import 'package:hazob_card_app/routes/routes.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+List<CameraDescription> cameras = [];
 
 class HazobPage extends StatefulWidget {
   const HazobPage({Key? key}) : super(key: key);
@@ -27,6 +32,21 @@ class _HazobPageState extends State<HazobPage> {
 
   Widget _buildContext(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await availableCameras().then(
+            (value) => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CameraPage(
+                  cameras: value,
+                ),
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.camera_alt),
+      ),
       backgroundColor: mainColor,
       resizeToAvoidBottomInset: false,
       body: Center(
@@ -256,13 +276,20 @@ class _HazobPageState extends State<HazobPage> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const DetailHazob(),
+                const SizedBox(
+                  height: 20,
+                ),
                 ButtonTheme(
                   buttonColor: Colors.white,
                   height: 60.0,
                   child: ElevatedButton(
                     style: ButtonStyle(
                         fixedSize: MaterialStateProperty.all<Size>(
-                            const Size(200, 30)),
+                            const Size(200, 40)),
                         backgroundColor:
                             MaterialStateProperty.all<Color>(darkOrangeColor)),
                     onPressed: () {},
