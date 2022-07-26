@@ -1,3 +1,4 @@
+// ignore_for_file: unnecessary_this
 
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';
@@ -10,11 +11,33 @@ class ProsedurKerja extends StatefulWidget {
 }
 
 class _ProsedurKerjaState extends State<ProsedurKerja> {
-  bool isChecked = false;
+  final GlobalKey<FormState> _formProsedurKerja = GlobalKey<FormState>();
+  late bool tidakTersedia;
+  late bool tidakDimengerti;
+  late bool tidakDipatuhi;
+  late bool tidakDiketahui;
+  late bool tidakSesuai;
+
+  @override
+  void initState() {
+    super.initState();
+    initProsedurKerja();
+  }
+
+  initProsedurKerja() {
+    this.tidakTersedia = false;
+    this.tidakDimengerti = false;
+    this.tidakDipatuhi = false;
+    this.tidakDiketahui = false;
+    this.tidakSesuai = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[Text(
+    return Form(key: _formProsedurKerja,
+      child: Column(
+        children: <Widget>[
+          Text(
             "PROSEDUR KERJA",
             style: TextStyle(
                 color: mainColor,
@@ -28,10 +51,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakTersedia,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakTersedia = value!;
                   });
                 },
               ),
@@ -48,10 +71,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakDiketahui,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakDiketahui = value!;
                   });
                 },
               ),
@@ -68,10 +91,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakDimengerti,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakDimengerti = value!;
                   });
                 },
               ),
@@ -92,10 +115,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakSesuai,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakSesuai = value!;
                   });
                 },
               ),
@@ -113,10 +136,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakDipatuhi,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakDipatuhi = value!;
                   });
                 },
               ),
@@ -132,7 +155,9 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
               ),
               const SizedBox(width: 10),
             ],
-          ),],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: unnecessary_import, unnecessary_this
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,109 +12,125 @@ class Akses extends StatefulWidget {
 }
 
 class _AksesState extends State<Akses> {
-  bool isChecked = false;
+  final GlobalKey<FormState> _formAkses = GlobalKey<FormState>();
+  late bool rusak;
+  late bool tidakAman;
+  late bool terhalang;
+  late bool terbatas;
+  @override
+  void initState() {
+    super.initState();
+    rusak = false;
+    terhalang = false;
+    tidakAman = false;
+    terbatas = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Text(
-          "AKSES",
-          style: TextStyle(
-              color: mainColor,
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Lato'),
-        ),
-        const SizedBox(height: 15),
-        Row(
-          children: <Widget>[
-            Checkbox(
-              checkColor: Colors.white,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
-              },
-            ),
-            const Expanded(
-              flex: 1,
-              child: Text(
-                "Rusak",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+    return Form(
+      key: _formAkses,
+      child: Column(
+        children: <Widget>[
+          Text(
+            "AKSES",
+            style: TextStyle(
+                color: mainColor,
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Lato'),
+          ),
+          const SizedBox(height: 15),
+          Row(
+            children: <Widget>[
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.resolveWith(getColor),
+                value: rusak,
+                onChanged: (bool? value) {
+                  setState(() {
+                    rusak = value!;
+                  });
+                },
               ),
-            ),
-            Checkbox(
-              checkColor: Colors.white,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
-              },
-            ),
-            const Expanded(
-              flex: 1,
-              child: Text(
-                "Tidak Aman",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  "Rusak",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Checkbox(
-              checkColor: Colors.white,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
-              },
-            ),
-            const Expanded(
-              flex: 1,
-              child: Text(
-                "Terhalang",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.resolveWith(getColor),
+                value: isChecked,
+                onChanged: (bool? value) {
+                  setState(() {
+                    isChecked = value!;
+                  });
+                },
               ),
-            ),
-            Checkbox(
-              checkColor: Colors.white,
-              fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  isChecked = value!;
-                });
-              },
-            ),
-            const Expanded(
-              flex: 1,
-              child: Text(
-                "Terbatas",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold),
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  "Tidak Aman",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.resolveWith(getColor),
+                value: terhalang,
+                onChanged: (bool? value) {
+                  setState(() {
+                    terhalang = value!;
+                  });
+                },
+              ),
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  "Terhalang",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Checkbox(
+                checkColor: Colors.white,
+                fillColor: MaterialStateProperty.resolveWith(getColor),
+                value: terbatas,
+                onChanged: (bool? value) {
+                  setState(() {
+                    terbatas = value!;
+                  });
+                },
+              ),
+              const Expanded(
+                flex: 1,
+                child: Text(
+                  "Terbatas",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

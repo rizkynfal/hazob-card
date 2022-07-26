@@ -1,16 +1,19 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:hazob_card_app/api/sheets_api.dart';
 import 'package:hazob_card_app/hazob_form/akses.dart';
 import 'package:hazob_card_app/hazob_form/detail_hazob.dart';
 import 'package:hazob_card_app/hazob_form/kamera.dart';
 import 'package:hazob_card_app/hazob_form/penyimpanan.dart';
 import 'package:hazob_card_app/hazob_form/perlengkapan_kerja.dart';
 import 'package:hazob_card_app/hazob_form/perlindungan_diri.dart';
+import 'package:hazob_card_app/hazob_form/posisi_kerja.dart';
 import 'package:hazob_card_app/hazob_form/prosedur_kerja.dart';
 import 'package:hazob_card_app/hazob_form/suasana_lingkungan.dart';
+import 'package:hazob_card_app/model/hazob_field.dart';
 
 import 'package:hazob_card_app/routes/routes.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -22,15 +25,32 @@ class HazobPage extends StatefulWidget {
 }
 
 class _HazobPageState extends State<HazobPage> {
+  final dateNow = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+  late TextEditingController _namaPengamat;
+  late TextEditingController _departemen;
+  late bool tidakTersedia;
+  late bool tidakLengkap;
+  late bool tidakDipakai;
+  late bool tidakCukup;
+  late bool tidakSesuai;
+  late bool rusak;
+  late bool _keadaanAman;
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(backgroundColor: mainColor, fontFamily: 'Lato'),
-      home: _buildContext(context),
-    );
+  void initState() {
+    super.initState();
+    
+    initHazob();
   }
 
-  Widget _buildContext(BuildContext context) {
+  initHazob() {
+    dateNow;
+    _namaPengamat = TextEditingController();
+    _departemen = TextEditingController();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -81,8 +101,16 @@ class _HazobPageState extends State<HazobPage> {
                 ),
                 const SizedBox(height: 50),
                 TextFormField(
+                  controller: _namaPengamat,
                   cursorColor: darkBlueColor,
                   decoration: InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    labelText: "Nama Pengamat",
+                    labelStyle: TextStyle(
+                      color: fontMainColor,
+                      fontSize: 15,
+                      fontFamily: 'Lato',
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide:
@@ -97,86 +125,15 @@ class _HazobPageState extends State<HazobPage> {
                       borderSide: BorderSide(color: darkBlueColor, width: 0.0),
                     ),
                     contentPadding: const EdgeInsets.only(left: 25),
-                    hintText: "Nama Pengamat",
-                    hintStyle: TextStyle(
-                      fontSize: 15,
-                      color: fontMainColor,
-                    ),
                     filled: true,
                     fillColor: darkOrangeColor,
                   ),
                 ),
                 const SizedBox(height: 40),
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 172,
-                      child: TextFormField(
-                        readOnly: true,
-                        cursorColor: darkBlueColor,
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
-                                color: Colors.red.shade600, width: 3),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(color: darkBlueColor, width: 3),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: darkBlueColor, width: 0.0),
-                          ),
-                          contentPadding: const EdgeInsets.only(left: 25),
-                          hintText: "Tgl. Dilaporkan",
-                          hintStyle: TextStyle(
-                            fontSize: 12,
-                            color: fontMainColor,
-                          ),
-                          filled: true,
-                          fillColor: darkOrangeColor,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    ButtonTheme(
-                      buttonColor: Colors.white,
-                      minWidth: 15.0,
-                      height: 40.0,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                fontMainColor)),
-                        onPressed: () {
-                          DatePicker.showDatePicker(
-                            context,
-                            showTitleActions: true,
-                            minTime: DateTime.now().subtract(
-                              const Duration(days: 10),
-                            ),
-                            maxTime: DateTime.now(),
-                            currentTime: DateTime.now(),
-                            locale: LocaleType.id,
-                            onChanged: (date) {},
-                            onConfirm: (date) {
-                              setState(() {});
-                            },
-                          );
-                        },
-                        child: Icon(
-                          Icons.date_range_outlined,
-                          size: 40,
-                          color: mainColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 40),
                 TextFormField(
+                  style: TextStyle(color: fontMainColor, fontSize: 12),
+                  initialValue: dateNow,
+                  readOnly: true,
                   cursorColor: darkBlueColor,
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
@@ -193,11 +150,36 @@ class _HazobPageState extends State<HazobPage> {
                       borderSide: BorderSide(color: darkBlueColor, width: 0.0),
                     ),
                     contentPadding: const EdgeInsets.only(left: 25),
-                    hintText: "Departemen / Perusahaan",
-                    hintStyle: TextStyle(
-                      fontSize: 15,
+                    filled: true,
+                    fillColor: darkOrangeColor,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                TextFormField(
+                  controller: _departemen,
+                  cursorColor: darkBlueColor,
+                  decoration: InputDecoration(
+                    floatingLabelAlignment: FloatingLabelAlignment.start,
+                    labelText: "Departemen / Perusahaan",
+                    labelStyle: TextStyle(
                       color: fontMainColor,
+                      fontSize: 15,
+                      fontFamily: 'Lato',
                     ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide:
+                          BorderSide(color: Colors.red.shade600, width: 3),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: darkBlueColor, width: 3),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: darkBlueColor, width: 0.0),
+                    ),
+                    contentPadding: const EdgeInsets.only(left: 25),
                     filled: true,
                     fillColor: darkOrangeColor,
                   ),
@@ -244,10 +226,10 @@ class _HazobPageState extends State<HazobPage> {
                             checkColor: Colors.white,
                             fillColor:
                                 MaterialStateProperty.resolveWith(getColor),
-                            value: isChecked,
+                            value: _keadaanAman,
                             onChanged: (bool? value) {
                               setState(() {
-                                isChecked = value!;
+                                _keadaanAman = value!;
                               });
                             },
                           ),
@@ -256,7 +238,8 @@ class _HazobPageState extends State<HazobPage> {
                               "Jika Semua dalam keadaan aman / baik (pengamatan positif)",
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Lato'),
                             ),
                           ),
                         ],
@@ -269,6 +252,7 @@ class _HazobPageState extends State<HazobPage> {
                       const ProsedurKerja(),
                       const Penyimpanan(),
                       const LingkunganSekitar(),
+                      const PosisiKerja(),
                       const Akses(),
                       const SizedBox(
                         height: 20,
@@ -292,8 +276,33 @@ class _HazobPageState extends State<HazobPage> {
                             const Size(200, 40)),
                         backgroundColor:
                             MaterialStateProperty.all<Color>(darkOrangeColor)),
-                    onPressed: () {},
-                    child: const Text("Selanjutnya"),
+                    onPressed: () async {
+                      final hazob1 = Hazob(
+                        tglLaporan: dateNow,
+                        namaPengamat: _namaPengamat.text,
+                        departemen: _departemen.text,
+                        positivCek: _keadaanAman,
+                        perlindunganDiri: perlindunganDiriList.toString(),
+                        prosedurKerja: "prosedurKerja",
+                        perlengkapanKerja: "perlengkapanKerja",
+                        penyimapanan: penyimpananList.toString(),
+                        suasanaLingkungan: "suasanaLingkungan",
+                        posisiKerja: "posisiKerja",
+                        akses: "akses",
+                        kegiatanDiamati: ,
+                        tindakanAmanDiamati: _tindakanPositif,
+                        tindakanNegatifDiamati: _tindakanNegatif,
+                        potensiBahaya: _potensiBahaya,
+                        perbaikanDilakukan: _perbaikanDilakukan,
+                        perbaikanDiusulkan: _perbaikanDiusulkan,
+                        tanggapan: _tanggapan,
+                        apakahPerlu: _apakahPerlu,
+                      );
+                      await HazobSheetsApi.insert([hazob1.toJson()]);
+                      penyimpananList.clear();
+                      perlindunganDiriList.clear();
+                    },
+                    child: const Text("Submit"),
                   ),
                 ),
               ],

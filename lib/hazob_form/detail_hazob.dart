@@ -1,8 +1,16 @@
-// ignore_for_file: unnecessary_import
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:hazob_card_app/routes/routes.dart';
+
+TextEditingController _kegiatanDiamatiController = TextEditingController();
+TextEditingController _tindakanPositifController = TextEditingController();
+TextEditingController _tindakanNegatifController = TextEditingController();
+TextEditingController _potensiBahayaController = TextEditingController();
+TextEditingController _perbaikanDilakukanController = TextEditingController();
+TextEditingController _perbaikanDiusulkanController = TextEditingController();
+TextEditingController _tanggapanController = TextEditingController();
+TextEditingController _apakahPerluController = TextEditingController();
+String? _kegiatanDiamati;
 
 class DetailHazob extends StatefulWidget {
   const DetailHazob({Key? key}) : super(key: key);
@@ -13,15 +21,29 @@ class DetailHazob extends StatefulWidget {
 
 class _DetailHazobState extends State<DetailHazob> {
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _kegiatanDiamati = _kegiatanDiamatiController.text;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
       TextField(
+        controller: _kegiatanDiamatiController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Kegiatan/Keadaan \nyang sedang diamati",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -34,11 +56,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Kegiatan/Keadaan Yang Sedang Diamati",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -48,12 +65,21 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        onEditingComplete: () => setState(() {
+          _kegiatanDiamati = _tindakanPositifController.text;
+        }),
+        controller: _tindakanPositifController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Tindakan Positif/Keadaan \nTidak Aman yang Diamati",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -66,11 +92,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Tindakan Poisitf / Keadaan Aman yang Diamati",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -80,12 +101,18 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _tindakanNegatifController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Tindakan negatif/Keadaan \nTidak Aman yang Diamati",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -98,11 +125,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Tindakan Negatif yang Diamati",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -112,12 +134,19 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _potensiBahayaController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText:
+              "Potensi bahaya dari tindakan / \nkeadaan tidak aman diatas",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -130,11 +159,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Keadaan Tidak Aman yang Diamati",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -144,12 +168,18 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _perbaikanDilakukanController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Perbaikan yang dilakukan",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -162,11 +192,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Potensi Bahaya dari Tindakan / Keadaan Tidak Aman diatas",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -176,12 +201,18 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _perbaikanDiusulkanController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Perbaikan yang diusulkan",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -194,11 +225,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Perbaikan yang dilakukan",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -208,12 +234,18 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _tanggapanController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Tanggapan dari yang diamati \n atas usulan perbaikan",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -226,11 +258,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Perbaikan yang  Diusulkan",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -240,12 +267,18 @@ class _DetailHazobState extends State<DetailHazob> {
         height: 20,
       ),
       TextField(
+        controller: _apakahPerluController,
         maxLines: 6,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
+          floatingLabelAlignment: FloatingLabelAlignment.center,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: "Apakah diperlukan \ntindakan lanjutan",
+          labelStyle: TextStyle(
+              color: fontMainColor, fontSize: 23, fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
+            borderSide: const BorderSide(color: Colors.white, width: 3),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
@@ -258,11 +291,6 @@ class _DetailHazobState extends State<DetailHazob> {
           contentPadding: const EdgeInsets.only(
             left: 25,
             top: 50,
-          ),
-          hintText: "Tanggapan dari yang Diamati atas usulan perbaikan",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
           ),
           filled: true,
           fillColor: darkOrangeColor,
@@ -270,35 +298,6 @@ class _DetailHazobState extends State<DetailHazob> {
       ),
       const SizedBox(
         height: 20,
-      ),
-      TextField(
-        maxLines: 6,
-        cursorColor: darkBlueColor,
-        decoration: InputDecoration(
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(color: Colors.red.shade600, width: 3),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(color: darkBlueColor, width: 3),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: darkBlueColor, width: 0.0),
-          ),
-          contentPadding: const EdgeInsets.only(
-            left: 25,
-            top: 50,
-          ),
-          hintText: "Apakah diperlukan tindakan lanjutan",
-          hintStyle: TextStyle(
-            fontSize: 15,
-            color: fontMainColor,
-          ),
-          filled: true,
-          fillColor: darkOrangeColor,
-        ),
       ),
     ]);
   }

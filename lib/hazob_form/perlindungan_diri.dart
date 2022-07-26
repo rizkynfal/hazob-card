@@ -1,6 +1,10 @@
+// ignore_for_file: unnecessary_this
+
 import 'package:flutter/material.dart';
 
 import '../routes/routes.dart';
+
+List<String> perlindunganDiriList = [];
 
 class PerlindunganDiri extends StatefulWidget {
   const PerlindunganDiri({Key? key}) : super(key: key);
@@ -10,7 +14,28 @@ class PerlindunganDiri extends StatefulWidget {
 }
 
 class _PerlindunganDiriState extends State<PerlindunganDiri> {
-  bool isChecked = false;
+  late bool tidakTersedia;
+  late bool tidakLengkap;
+  late bool tidakDipakai;
+  late bool tidakCukup;
+  late bool tidakSesuai;
+  late bool rusak;
+  @override
+  void initState() {
+    super.initState();
+    perlindunganDiriList;
+    initPerlindunganDiri();
+  }
+
+  initPerlindunganDiri() {
+    this.tidakTersedia = false;
+    this.tidakDipakai = false;
+    this.tidakLengkap = false;
+    this.tidakCukup = false;
+    this.tidakSesuai = false;
+    this.rusak = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,10 +55,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakTersedia,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakTersedia = value!;
+                  perlindunganDiriList.add("Tidak Tersedia");
                 });
               },
             ),
@@ -50,10 +76,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: rusak,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  rusak = value!;
+                  perlindunganDiriList.add("Rusak");
                 });
               },
             ),
@@ -70,10 +97,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakLengkap,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakLengkap = value!;
+                  perlindunganDiriList.add("Tidak Lengkap");
                 });
               },
             ),
@@ -94,10 +122,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakSesuai,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakSesuai = value!;
+                  perlindunganDiriList.add("Tidak Sesuai");
                 });
               },
             ),
@@ -114,10 +143,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakDipakai,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakDipakai = value!;
+                  perlindunganDiriList.add("Tidak Dipakai");
                 });
               },
             ),
@@ -134,10 +164,11 @@ class _PerlindunganDiriState extends State<PerlindunganDiri> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakCukup,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakCukup = value!;
+                  perlindunganDiriList.add("Tidak Cukup");
                 });
               },
             ),

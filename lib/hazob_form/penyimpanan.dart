@@ -1,8 +1,9 @@
-// ignore_for_file: unnecessary_import
+// ignore_for_file: unnecessary_import, unnecessary_this
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';
+
+List<String> penyimpananList = [];
 
 class Penyimpanan extends StatefulWidget {
   const Penyimpanan({Key? key}) : super(key: key);
@@ -12,7 +13,17 @@ class Penyimpanan extends StatefulWidget {
 }
 
 class _PenyimpananState extends State<Penyimpanan> {
-  bool isChecked = false;
+  late bool tidakAdaLabel = false;
+  late bool rakTakaman = false;
+  late bool tidakRapih = false;
+  late bool tidakAkses = false;
+
+  @override
+  void initState() {
+    super.initState();
+    penyimpananList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,10 +42,11 @@ class _PenyimpananState extends State<Penyimpanan> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakAdaLabel,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakAdaLabel = value!;
+                  penyimpananList.add("Tidak Ada Label");
                 });
               },
             ),
@@ -51,10 +63,11 @@ class _PenyimpananState extends State<Penyimpanan> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakRapih,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakRapih = value!;
+                  penyimpananList.add("Tidak Rapih");
                 });
               },
             ),
@@ -75,10 +88,11 @@ class _PenyimpananState extends State<Penyimpanan> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: rakTakaman,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  rakTakaman = value!;
+                  penyimpananList.add("Rak Tidak Aman");
                 });
               },
             ),
@@ -95,10 +109,11 @@ class _PenyimpananState extends State<Penyimpanan> {
             Checkbox(
               checkColor: Colors.white,
               fillColor: MaterialStateProperty.resolveWith(getColor),
-              value: isChecked,
+              value: tidakAkses,
               onChanged: (bool? value) {
                 setState(() {
-                  isChecked = value!;
+                  tidakAkses = value!;
+                  penyimpananList.add("Tidak ada Akses");
                 });
               },
             ),

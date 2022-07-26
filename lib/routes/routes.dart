@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 String SPLASH_SCREEN = '/SplashScreen',
-    HOME_SCREEN = '/HomeScreen',
+    DETAIL_HAZOB = '/DetailHazob',
     HAZOB_FORM = '/HazobForm',
     VIDEO_CONTAINER_SCREEN = '/VideoContainerScreen',
     ALBUM_CONTAINER_SCREEN = '/AlbumContainerScreen',
