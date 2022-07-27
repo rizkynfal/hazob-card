@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_import, unnecessary_this
+// ignore_for_file: unnecessary_this
 
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';

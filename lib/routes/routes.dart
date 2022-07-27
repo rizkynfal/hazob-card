@@ -2,12 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-String SPLASH_SCREEN = '/SplashScreen',
-    DETAIL_HAZOB = '/DetailHazob',
-    HAZOB_FORM = '/HazobForm',
-    VIDEO_CONTAINER_SCREEN = '/VideoContainerScreen',
-    ALBUM_CONTAINER_SCREEN = '/AlbumContainerScreen',
-    MESSAGE_VIEW = 'MessageView';
+String SPLASH_SCREEN = '/SplashScreen', HAZOB_FORM = '/HazobForm';
+
 Color getColor(Set<MaterialState> states) {
   const Set<MaterialState> interactiveStates = <MaterialState>{
     MaterialState.pressed,
@@ -19,7 +15,8 @@ Color getColor(Set<MaterialState> states) {
   }
   return darkOrangeColor;
 }
- bool isChecked = false;
+
+bool isChecked = false;
 Color mainColor = const Color(0xFFFFE5B4);
 Color fontMainColor = const Color(0xFF3A5BA0);
 Color darkOrangeColor = const Color(0xFFFFA500);

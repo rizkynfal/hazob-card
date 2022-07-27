@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';
 
+List<String> perlengkapanKerjaList = [];
+
 class PerlengkapanKerja extends StatefulWidget {
   const PerlengkapanKerja({Key? key}) : super(key: key);
 
@@ -11,8 +13,9 @@ class PerlengkapanKerja extends StatefulWidget {
   State<PerlengkapanKerja> createState() => _PerlengkapanKerjaState();
 }
 
-class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKey<FormState> _formPerlengkapanKerja = GlobalKey<FormState>();
-  late bool tidakTersedia ;
+class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {
+  final GlobalKey<FormState> _formPerlengkapanKerja = GlobalKey<FormState>();
+  late bool tidakTersedia;
   late bool tidakLengkap;
   late bool tidakBenarPakai;
   late bool tidakCukup;
@@ -23,6 +26,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
   @override
   void initState() {
     super.initState();
+    perlengkapanKerjaList;
     initPerlengkapanKerja();
   }
 
@@ -39,7 +43,8 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
 
   @override
   Widget build(BuildContext context) {
-    return  Form(key: _formPerlengkapanKerja,
+    return Form(
+      key: _formPerlengkapanKerja,
       child: Column(
         children: <Widget>[
           Text(
@@ -60,6 +65,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakTersedia = value!;
+                    perlengkapanKerjaList.add('Tidak Tersedia');
                   });
                 },
               ),
@@ -80,6 +86,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakBenarPakai = value!;
+                    perlengkapanKerjaList.add('Tidak benar pemakaian');
                   });
                 },
               ),
@@ -104,6 +111,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakSesuai = value!;
+                    perlengkapanKerjaList.add('Tidak Sesuai');
                   });
                 },
               ),
@@ -124,6 +132,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakLengkap = value!;
+                    perlengkapanKerjaList.add('Tidak Lengkap');
                   });
                 },
               ),
@@ -144,6 +153,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     rusak = value!;
+                    perlengkapanKerjaList.add('Rusak');
                   });
                 },
               ),
@@ -168,6 +178,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakCukup = value!;
+                    perlengkapanKerjaList.add('Tidak Cukup');
                   });
                 },
               ),
@@ -188,6 +199,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     tidakBerpelindung = value!;
+                    perlengkapanKerjaList.add('Tidak Berpelindung');
                   });
                 },
               ),
@@ -208,6 +220,7 @@ class _PerlengkapanKerjaState extends State<PerlengkapanKerja> {  final GlobalKe
                 onChanged: (bool? value) {
                   setState(() {
                     pelindungRusak = value!;
+                    perlengkapanKerjaList.add('Pelindung Rusak');
                   });
                 },
               ),

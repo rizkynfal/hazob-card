@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';
 
+List<String> prosedurkerjaList = [];
+
 class ProsedurKerja extends StatefulWidget {
   const ProsedurKerja({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
   @override
   void initState() {
     super.initState();
+    prosedurkerjaList;
     initProsedurKerja();
   }
 
@@ -34,7 +37,8 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(key: _formProsedurKerja,
+    return Form(
+      key: _formProsedurKerja,
       child: Column(
         children: <Widget>[
           Text(
@@ -75,6 +79,7 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                 onChanged: (bool? value) {
                   setState(() {
                     tidakDiketahui = value!;
+                    prosedurkerjaList.add('Tidak Tersedia');
                   });
                 },
               ),
@@ -95,6 +100,7 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                 onChanged: (bool? value) {
                   setState(() {
                     tidakDimengerti = value!;
+                    prosedurkerjaList.add('Tidak Dimengerti');
                   });
                 },
               ),
@@ -119,6 +125,7 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                 onChanged: (bool? value) {
                   setState(() {
                     tidakSesuai = value!;
+                    prosedurkerjaList.add('Tidak Sesuai');
                   });
                 },
               ),
@@ -140,6 +147,7 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                 onChanged: (bool? value) {
                   setState(() {
                     tidakDipatuhi = value!;
+                    prosedurkerjaList.add('Tidak Dipatuhi');
                   });
                 },
               ),

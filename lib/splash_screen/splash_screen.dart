@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: _SplashScreen(),
-      theme: ThemeData(primarySwatch: Colors.green, fontFamily: 'Montserrat'),
+      theme: ThemeData(primarySwatch: Colors.green, fontFamily: 'Lato'),
     );
   }
 }
@@ -28,7 +28,7 @@ class _SplashScreenState extends State<_SplashScreen> {
   }
 
   _loadSplashScreen() {
-    var duration = const Duration(seconds: 5);
+    var duration = const Duration(seconds: 2);
     return Timer(duration, navigationToLogin);
   }
 
@@ -65,6 +65,18 @@ class _SplashScreenState extends State<_SplashScreen> {
                       Text(
                         "HAZOB CARD",
                         style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: fontMainColor,
+                          fontSize: 18,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "SAFETY YES!!\nACCIDENT NO!",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
                           color: fontMainColor,
                           fontSize: 16,
                         ),

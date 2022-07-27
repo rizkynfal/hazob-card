@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_declarations
 
+import 'dart:io';
+
 class HazobFields {
   static final String tglLaporan = 'Tanggal';
   static final String namaPengamat = 'Nama Pengamat';
@@ -7,8 +9,9 @@ class HazobFields {
   static final String positivCek =
       'Jika semua dalam keadaan aman/baik(pengamatan positif)';
   static final String perlindunganDiri = 'Perlengkapan Pelindung diri';
-  static final String prosedurKerja = 'Prosedur Kerja';
+
   static final String perlengkapanKerja = 'Perlengkapan Kerja';
+  static final String prosedurKerja = 'Prosedur Kerja';
   static final String penyimapanan = 'Penyimapanan';
   static final String suasanaLingkungan = 'Suasana Lingkungan Sekitaran';
   static final String posisiKerja = 'Posisi Kerja';
@@ -16,8 +19,16 @@ class HazobFields {
   static final String kegiatanDiamati = 'Kegiatan/Keadaan Yang Sedang Diamati';
   static final String tindakanAmanDiamati =
       'Tindakan Poisitf / Keadaan Aman yang Diamati';
-  static final String tindakanNegatifDiamati = 'Tindakan Negatif yang Diamati';
-  static final String kegiatanTidakAman = 'Keadaan Tidak Aman yang Diamat';
+  static final String tindakanNegatifDiamati =
+      'Tindakan / Keadaan  Negatif Tidak Aman yang Diamati';
+  static final String potensiBahaya =
+      'Potensi bahaya dari tindakan/keadaan tidak aman diatas';
+  static final String perbaikanDilakukan = 'Perbaikan yang dilakukan';
+  static final String perbaikanDiusulkan = 'Perbaikan yang diusulkan';
+  static final String tanggapan =
+      'Tanggapan dari yang diamati atas usulan perbaikan';
+  static final String apakahPerlu = 'Apakah diperlukan tindakan lanjutan';
+  static final File image = File('path');
 
   static List<String> getFields() => [
         tglLaporan,
@@ -25,8 +36,8 @@ class HazobFields {
         departemen,
         positivCek,
         perlindunganDiri,
-        prosedurKerja,
         perlengkapanKerja,
+        prosedurKerja,
         penyimapanan,
         suasanaLingkungan,
         posisiKerja,
@@ -34,7 +45,11 @@ class HazobFields {
         kegiatanDiamati,
         tindakanAmanDiamati,
         tindakanNegatifDiamati,
-        kegiatanTidakAman
+        potensiBahaya,
+        perbaikanDilakukan,
+        perbaikanDiusulkan,
+        tanggapan,
+        apakahPerlu,
       ];
 }
 
@@ -44,8 +59,9 @@ class Hazob {
   final String departemen;
   final bool positivCek;
   final String perlindunganDiri;
-  final String prosedurKerja;
+
   final String perlengkapanKerja;
+  final String prosedurKerja;
   final String penyimapanan;
   final String suasanaLingkungan;
   final String posisiKerja;
@@ -53,7 +69,11 @@ class Hazob {
   final String kegiatanDiamati;
   final String tindakanAmanDiamati;
   final String tindakanNegatifDiamati;
-  final String kegiatanTidakAman;
+  final String potensiBahaya;
+  final String perbaikanDilakukan;
+  final String perbaikanDiusulkan;
+  final String tanggapan;
+  final String apakahPerlu;
 
   const Hazob({
     required this.tglLaporan,
@@ -61,8 +81,8 @@ class Hazob {
     required this.departemen,
     required this.positivCek,
     required this.perlindunganDiri,
-    required this.prosedurKerja,
     required this.perlengkapanKerja,
+    required this.prosedurKerja,
     required this.penyimapanan,
     required this.suasanaLingkungan,
     required this.posisiKerja,
@@ -70,7 +90,11 @@ class Hazob {
     required this.kegiatanDiamati,
     required this.tindakanAmanDiamati,
     required this.tindakanNegatifDiamati,
-    required this.kegiatanTidakAman,
+    required this.potensiBahaya,
+    required this.perbaikanDilakukan,
+    required this.perbaikanDiusulkan,
+    required this.tanggapan,
+    required this.apakahPerlu,
   });
   Map<String, dynamic> toJson() => {
         HazobFields.tglLaporan: tglLaporan,
@@ -78,8 +102,8 @@ class Hazob {
         HazobFields.departemen: departemen,
         HazobFields.positivCek: positivCek,
         HazobFields.perlindunganDiri: perlindunganDiri,
-        HazobFields.prosedurKerja: prosedurKerja,
         HazobFields.perlengkapanKerja: perlengkapanKerja,
+        HazobFields.prosedurKerja: prosedurKerja,
         HazobFields.penyimapanan: penyimapanan,
         HazobFields.suasanaLingkungan: suasanaLingkungan,
         HazobFields.posisiKerja: posisiKerja,
@@ -87,6 +111,20 @@ class Hazob {
         HazobFields.kegiatanDiamati: kegiatanDiamati,
         HazobFields.tindakanAmanDiamati: tindakanAmanDiamati,
         HazobFields.tindakanNegatifDiamati: tindakanNegatifDiamati,
-        HazobFields.kegiatanTidakAman: kegiatanTidakAman,
+        HazobFields.potensiBahaya: potensiBahaya,
+        HazobFields.perbaikanDilakukan: perbaikanDilakukan,
+        HazobFields.perbaikanDiusulkan: perbaikanDiusulkan,
+        HazobFields.tanggapan: tanggapan,
+        HazobFields.apakahPerlu: apakahPerlu,
       };
+}
+
+class HazobImage {
+  final File? ImagePick;
+
+  HazobImage({
+    required this.ImagePick,
+  });
+
+  Map<File, dynamic> uploadImg() => {HazobFields.image: ImagePick};
 }

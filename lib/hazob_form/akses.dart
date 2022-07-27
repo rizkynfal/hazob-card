@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/routes/routes.dart';
 
+List<String> aksesList = [];
+
 class Akses extends StatefulWidget {
   const Akses({Key? key}) : super(key: key);
 
@@ -50,6 +52,7 @@ class _AksesState extends State<Akses> {
                 onChanged: (bool? value) {
                   setState(() {
                     rusak = value!;
+                    aksesList.add('Rusak');
                   });
                 },
               ),
@@ -66,10 +69,11 @@ class _AksesState extends State<Akses> {
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
-                value: isChecked,
+                value: tidakAman,
                 onChanged: (bool? value) {
                   setState(() {
-                    isChecked = value!;
+                    tidakAman = value!;
+                    aksesList.add('Tidak Aman');
                   });
                 },
               ),
@@ -94,6 +98,7 @@ class _AksesState extends State<Akses> {
                 onChanged: (bool? value) {
                   setState(() {
                     terhalang = value!;
+                    aksesList.add('Terhalang');
                   });
                 },
               ),
@@ -114,6 +119,7 @@ class _AksesState extends State<Akses> {
                 onChanged: (bool? value) {
                   setState(() {
                     terbatas = value!;
+                    aksesList.add('Terbatas');
                   });
                 },
               ),
