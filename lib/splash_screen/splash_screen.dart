@@ -56,29 +56,21 @@ class _SplashScreenState extends State<_SplashScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Image.asset(
-                        'assets/img/LogoTatelyNV.png',
-                        width: 310,
+                        'assets/img/logoHazob.png',
+                        width: 210,
                       ),
                       const Padding(
                         padding: EdgeInsets.only(top: 10.0),
                       ),
-                      Text(
-                        "HAZOB CARD",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: fontMainColor,
-                          fontSize: 18,
-                        ),
-                      ),
                       const SizedBox(
-                        height: 30,
+                        height: 40,
                       ),
                       Text(
                         "SAFETY YES!!\nACCIDENT NO!",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: fontMainColor,
-                          fontSize: 16,
+                          fontSize: 20,
                         ),
                       ),
                     ],

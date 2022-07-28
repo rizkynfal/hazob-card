@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/hazob_form/hazob_page.dart';
 import 'package:hazob_card_app/routes/routes.dart';
+import 'dart:io';
 
 class ThankYou extends StatelessWidget {
   const ThankYou({Key? key}) : super(key: key);
@@ -22,61 +23,67 @@ class ThankYou extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "HAZOB CARD",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: fontMainColor,
-                          fontSize: 18,
+                      Container(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Image.asset(
+                          'assets/img/logoHazob.png',
+                          width: 200,
                         ),
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      const SizedBox(height: 40),
                       Text(
                         "SAFETY YES!!\nACCIDENT NO!",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: fontMainColor,
-                          fontSize: 16,
+                          fontSize: 23,
+                        ),
+                      ),
+                      const SizedBox(height: 80),
+                      Text(
+                        "Terima Kasih\nData Telah Terkirim",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: fontMainColor,
+                          fontSize: 23,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        height: 10,
+                Column(
+                  children: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all<Size>(
+                            const Size(200, 50)),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "1.0.0",
-                            style: TextStyle(
-                              color: fontMainColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
+                      child: const Text('Back'),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                const HazobPage(),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(200, 50)),
+                        ),
+                        onPressed: () => exit(0),
+                        child: const Text('Exit Aplikasi'))
+                  ],
                 ),
-                ElevatedButton(
-                  child: Text('es'),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => const HazobPage(),
-                      ),
-                    );
-                  },
-                )
+                const SizedBox(height: 50)
               ],
             ),
           ],

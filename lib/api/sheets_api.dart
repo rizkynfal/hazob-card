@@ -3,8 +3,6 @@
 import 'package:gsheets/gsheets.dart';
 import 'package:hazob_card_app/model/hazob_field.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 
 class HazobSheetsApi {
   static const _credentials = r'''
@@ -20,6 +18,8 @@ class HazobSheetsApi {
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hazob-hse-2022%40new-hazob-2022.iam.gserviceaccount.com"
 }
+
+
 
 ''';
 
@@ -53,10 +53,5 @@ class HazobSheetsApi {
   static Future insert(List<Map<String, dynamic>> rowList) async {
     if (_hazobSheet == null) return;
     _hazobSheet!.values.map.appendRows(rowList);
-  }
-
-  static Future insertImg(List<Map<File, dynamic?>> imageList) async {
-    if (_hazobSheet == null) return;
-    _hazobSheet!.values.appendRow(imageList);
   }
 }

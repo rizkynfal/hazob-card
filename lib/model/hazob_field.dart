@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_declarations
 
-import 'dart:io';
 
 class HazobFields {
   static final String tglLaporan = 'Tanggal';
@@ -28,7 +27,7 @@ class HazobFields {
   static final String tanggapan =
       'Tanggapan dari yang diamati atas usulan perbaikan';
   static final String apakahPerlu = 'Apakah diperlukan tindakan lanjutan';
-  static final File image = File('path');
+
 
   static List<String> getFields() => [
         tglLaporan,
@@ -119,12 +118,4 @@ class Hazob {
       };
 }
 
-class HazobImage {
-  final File? ImagePick;
 
-  HazobImage({
-    required this.ImagePick,
-  });
-
-  Map<File, dynamic> uploadImg() => {HazobFields.image: ImagePick};
-}

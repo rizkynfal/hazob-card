@@ -15,18 +15,11 @@ class Akses extends StatefulWidget {
 
 class _AksesState extends State<Akses> {
   final GlobalKey<FormState> _formAkses = GlobalKey<FormState>();
-  late bool rusak;
-  late bool tidakAman;
-  late bool terhalang;
-  late bool terbatas;
-  @override
-  void initState() {
-    super.initState();
-    rusak = false;
-    terhalang = false;
-    tidakAman = false;
-    terbatas = false;
-  }
+  late bool rusak = false;
+  late bool   tidakAman = false;
+  late bool  terhalang = false;
+  late bool  terbatas = false;
+
 
   @override
   Widget build(BuildContext context) {

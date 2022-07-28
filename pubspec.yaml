@@ -13,7 +13,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_datetime_picker: ^1.5.1
   intl: ^0.17.0
-  camera: ^0.10.0
   gsheets: ^0.4.2
   image_picker: ^0.8.5+3
   flutter_speed_dial: ^6.0.0
@@ -24,7 +23,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.9.3
 
+flutter_icons:
+  image_path_android: "assets/img/logoHazob.png"
+  image_path_ios: "assets/img/logoHazob.png"
+  ios: true
+  android: true
 
 flutter:
   uses-material-design: true
