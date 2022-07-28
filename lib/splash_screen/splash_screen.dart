@@ -86,7 +86,7 @@ class _SplashScreenState extends State<_SplashScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "1.0.0",
+                          "1.0.0+2",
                           style: TextStyle(
                             color: fontMainColor,
                             fontWeight: FontWeight.bold,

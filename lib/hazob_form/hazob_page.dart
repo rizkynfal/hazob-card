@@ -21,8 +21,6 @@ import 'package:hazob_card_app/routes/routes.dart';
 import 'package:hazob_card_app/thankyou_page/thankyou_page.dart';
 import 'package:intl/intl.dart';
 
-
-
 class HazobPage extends StatefulWidget {
   const HazobPage({Key? key}) : super(key: key);
 
@@ -44,8 +42,8 @@ class _HazobPageState extends State<HazobPage> {
         this.img = imageTemporary;
       });
     } on PlatformException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Belum ada gambar')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Belum ada gambar')));
     }
   }
 
@@ -333,9 +331,9 @@ class _HazobPageState extends State<HazobPage> {
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size>(
-                            const Size(200, 50)),
-                        ),
+                      fixedSize:
+                          MaterialStateProperty.all<Size>(const Size(200, 50)),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         final hazob1 = Hazob(
@@ -351,8 +349,7 @@ class _HazobPageState extends State<HazobPage> {
                           posisiKerja: prosedurkerjaList.toString(),
                           akses: aksesList.toString(),
                           kegiatanDiamati: _kegiatanDiamatiController.text,
-                          tindakanAmanDiamati:
-                              _tindakanPositifController.text,
+                          tindakanAmanDiamati: _tindakanPositifController.text,
                           tindakanNegatifDiamati:
                               _tindakanNegatifController.text,
                           potensiBahaya: _potensiBahayaController.text,
@@ -371,11 +368,8 @@ class _HazobPageState extends State<HazobPage> {
                               'Hazob Submission',
                               textAlign: TextAlign.center,
                             ),
-                            content: const SizedBox(
-                              height: 50,
-                              child: Text(
-                                  'Apakah anda yakin mengirim data ini ?'),
-                            ),
+                            content: const Text(
+                                'Apakah anda yakin mengirim data ini ?'),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -386,9 +380,7 @@ class _HazobPageState extends State<HazobPage> {
                                   style: TextStyle(color: dangerColor),
                                 ),
                               ),
-                              const Spacer(
-                                flex: 1,
-                              ),
+                              const SizedBox(width: 30),
                               TextButton(
                                 onPressed: () async {
                                   await HazobSheetsApi.insert(
@@ -427,9 +419,6 @@ class _HazobPageState extends State<HazobPage> {
                       }
                     },
                     child: const Text("Submit"),
-                  ),
-                  const SizedBox(
-                    height: 40,
                   ),
                 ],
               ),
