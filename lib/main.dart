@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/api/sheets_api.dart';
-
+import 'package:hazob_card_app/api/drive_api.dart';
 import 'package:hazob_card_app/hazob_form/hazob_page.dart';
 import 'package:hazob_card_app/splash_screen/splash_screen.dart';
 import 'routes/routes.dart';
 
+final drive = GoogleDrive();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HazobSheetsApi.init();
+  await drive.getAccessCredentials();
   runApp(const MyApp());
 }
 
@@ -24,7 +26,6 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         SPLASH_SCREEN: (BuildContext context) => const SplashScreen(),
         HAZOB_FORM: (BuildContext context) => const HazobPage(),
-    
       },
     );
   }

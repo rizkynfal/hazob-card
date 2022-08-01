@@ -71,7 +71,8 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                       fontSize: 12,
                       fontWeight: FontWeight.bold),
                 ),
-              ),
+              ),  const Spacer(flex: 2,),
+          
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -93,6 +94,10 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -114,10 +119,6 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -139,7 +140,6 @@ class _ProsedurKerjaState extends State<ProsedurKerja> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              const Spacer(),
               Checkbox(
                 checkColor: Colors.white,
                 fillColor: MaterialStateProperty.resolveWith(getColor),

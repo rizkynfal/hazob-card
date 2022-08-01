@@ -1,11 +1,18 @@
-// ignore_for_file: prefer_const_declarations
+// ignore_for_file: depend_on_referenced_packages, unnecessary_null_comparison
 
-import 'package:gsheets/gsheets.dart';
-import 'package:hazob_card_app/model/hazob_field.dart';
-import 'dart:async';
+import 'dart:io';
 
-class HazobSheetsApi {
-  static const _credentials = r'''
+import 'package:googleapis/drive/v3.dart' as ga;
+import 'package:googleapis_auth/auth_io.dart' as auth;
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
+Map<String, dynamic>? detailImg;
+
+class GoogleDrive {
+  late ga.FileList tes;
+  // ignore: prefer_const_declarations
+  static final _credentials = auth.ServiceAccountCredentials.fromJson(r'''
 {
   "type": "service_account",
   "project_id": "hazob-card-app",
@@ -19,37 +26,66 @@ class HazobSheetsApi {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hazob-card-app%40hazob-card-app.iam.gserviceaccount.com"
 }
 
-''';
 
-  static final _spreadsheetId = "1qqlnbSbtLGnhaad3xWo3I-tbv3PYqXaFZfbZaYZ0T2I";
-  static final _gsheets = GSheets(_credentials);
-  static Worksheet? _hazobSheet;
+''');
 
-  static Future init() async {
+  static const driveScope = ['https://www.googleapis.com/auth/drive'];
+  static final _client = http.Client();
+
+  Future<http.Client> getAccessCredentials() async {
+    return auth.authenticatedClient(
+        http.Client(),
+        await auth.obtainAccessCredentialsViaServiceAccount(
+            _credentials, driveScope, _client));
+  }
+
+  Future<String?> _getFolderId(ga.DriveApi driveApi) async {
+    const mimeType = "application/vnd.google-apps.folder";
+    String folderName = "Hazob pict";
+
     try {
-      final spreadsheets = await _gsheets.spreadsheet(_spreadsheetId);
-      _hazobSheet = await _getWorkSheet(spreadsheets, title: 'Hazob');
+      final found = await driveApi.files.list(
+        q: "mimeType = '$mimeType' and name = '$folderName'",
+        $fields: "files(id, name)",
+      );
+      final files = found.files;
+      if (files == null) {
+        return null;
+      }
 
-      final firstRow = HazobFields.getFields();
-      _hazobSheet!.values.insertRow(1, firstRow);
+      // The folder already exists
+      if (files.isNotEmpty) {
+        return files.first.id;
+      }
+
+      // Create a folder
+      var folder = ga.File();
+      folder.name = folderName;
+      folder.mimeType = mimeType;
+      final folderCreation = await driveApi.files.create(folder);
+
+      return folderCreation.id;
     } catch (e) {
       return null;
     }
   }
 
-  static Future<Worksheet> _getWorkSheet(
-    Spreadsheet spreadsheet, {
-    required String title,
-  }) async {
-    try {
-      return await spreadsheet.addWorksheet(title);
-    } catch (e) {
-      return spreadsheet.worksheetByTitle(title)!;
-    }
-  }
+  Future<void> uploadFile(File file) async {
+    var client = await getAccessCredentials();
+    ga.DriveApi driveApi = ga.DriveApi(client);
+    final folderId = await _getFolderId(driveApi);
+    var driveFile = ga.File();
+    driveFile.parents = [folderId!];
+    var response = await driveApi.files.create(
+        driveFile
+          ..name =
+              "${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}.png",
+        uploadMedia: ga.Media(file.openRead(), file.lengthSync()));
 
-  static Future insert(List<Map<String, dynamic>> rowList) async {
-    if (_hazobSheet == null) return;
-    _hazobSheet!.values.map.appendRows(rowList);
+    if (file != null) {
+      detailImg = response.toJson();
+    } else {
+      detailImg = {'id': 'Tidak ada foto'};
+    }
   }
 }

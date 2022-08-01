@@ -50,7 +50,7 @@ class _AksesState extends State<Akses> {
                 },
               ),
               const Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text(
                   "Rusak",
                   style: TextStyle(
@@ -96,7 +96,7 @@ class _AksesState extends State<Akses> {
                 },
               ),
               const Expanded(
-                flex: 1,
+                flex: 2,
                 child: Text(
                   "Terhalang",
                   style: TextStyle(

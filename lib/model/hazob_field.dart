@@ -27,6 +27,7 @@ class HazobFields {
   static final String tanggapan =
       'Tanggapan dari yang diamati atas usulan perbaikan';
   static final String apakahPerlu = 'Apakah diperlukan tindakan lanjutan';
+  static final String lampiranFoto = 'Lampiran Foto';
 
 
   static List<String> getFields() => [
@@ -49,6 +50,7 @@ class HazobFields {
         perbaikanDiusulkan,
         tanggapan,
         apakahPerlu,
+        lampiranFoto
       ];
 }
 
@@ -73,6 +75,7 @@ class Hazob {
   final String perbaikanDiusulkan;
   final String tanggapan;
   final String apakahPerlu;
+  final String lampiranFoto;
 
   const Hazob({
     required this.tglLaporan,
@@ -94,6 +97,7 @@ class Hazob {
     required this.perbaikanDiusulkan,
     required this.tanggapan,
     required this.apakahPerlu,
+    required this.lampiranFoto
   });
   Map<String, dynamic> toJson() => {
         HazobFields.tglLaporan: tglLaporan,
@@ -115,6 +119,7 @@ class Hazob {
         HazobFields.perbaikanDiusulkan: perbaikanDiusulkan,
         HazobFields.tanggapan: tanggapan,
         HazobFields.apakahPerlu: apakahPerlu,
+        HazobFields.lampiranFoto: lampiranFoto,
       };
 }
 

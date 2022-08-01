@@ -168,7 +168,7 @@ class _LingkunganSekitarState extends State<LingkunganSekitar> {
               onChanged: (bool? value) {
                 setState(() {
                   basah = value!;
-                  suasanaLingkunganList.add('Basah / banjir /licin');
+                  suasanaLingkunganList.add('Basah / Banjir /Licin');
                 });
               },
             ),

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_this, use_build_context_synchronously, unused_catch_clause
+// ignore_for_file: unnecessary_this, use_build_context_synchronously, unused_catch_clause, prefer_typing_uninitialized_variables
 import 'dart:io';
 import 'dart:async';
 
@@ -16,6 +16,7 @@ import 'package:hazob_card_app/hazob_form/posisi_kerja.dart';
 import 'package:hazob_card_app/hazob_form/prosedur_kerja.dart';
 import 'package:hazob_card_app/hazob_form/suasana_lingkungan.dart';
 import 'package:hazob_card_app/model/hazob_field.dart';
+import 'package:hazob_card_app/api/drive_api.dart';
 
 import 'package:hazob_card_app/routes/routes.dart';
 import 'package:hazob_card_app/thankyou_page/thankyou_page.dart';
@@ -29,6 +30,8 @@ class HazobPage extends StatefulWidget {
 }
 
 class _HazobPageState extends State<HazobPage> {
+  final drive = GoogleDrive();
+  late var hazob1;
   File? img;
   final _formKey = GlobalKey<FormState>();
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
@@ -70,6 +73,7 @@ class _HazobPageState extends State<HazobPage> {
   @override
   void initState() {
     super.initState();
+    drive.getAccessCredentials();
     dateNow;
     _namaPengamat = TextEditingController();
     _departemen = TextEditingController();
@@ -95,6 +99,9 @@ class _HazobPageState extends State<HazobPage> {
               backgroundColor: Colors.blue,
               onTap: () async {
                 await getImage(ImageSource.gallery);
+                if (img != null) {
+                  drive.uploadFile(img!);
+                }
               }),
           SpeedDialChild(
               backgroundColor: Colors.pink,
@@ -102,6 +109,9 @@ class _HazobPageState extends State<HazobPage> {
               label: 'Camera',
               onTap: () async {
                 await getImage(ImageSource.camera);
+                if (img != null) {
+                  drive.uploadFile(img!);
+                }
               }),
         ],
       ),
@@ -181,7 +191,7 @@ class _HazobPageState extends State<HazobPage> {
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Data tidak boleh kosong';
+                        return '* Data tidak boleh kosong';
                       }
                       return null;
                     },
@@ -190,6 +200,13 @@ class _HazobPageState extends State<HazobPage> {
                     readOnly: true,
                     cursorColor: darkBlueColor,
                     decoration: InputDecoration(
+                      helperText: "* Tanggal Otomatis Terisi",
+                      helperStyle: const TextStyle(
+                        color: Colors.green,
+                      ),
+                      labelText: "Tanggal",
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      labelStyle: TextStyle(color: fontMainColor, fontSize: 20),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide:
@@ -213,7 +230,7 @@ class _HazobPageState extends State<HazobPage> {
                   TextFormField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Data tidak boleh kosong';
+                        return '*Data tidak boleh kosong';
                       }
                       return null;
                     },
@@ -326,6 +343,29 @@ class _HazobPageState extends State<HazobPage> {
                     height: 20,
                   ),
                   detailHazob(),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        'Review Foto : ',
+                        style: TextStyle(color: fontMainColor, fontSize: 15),
+                      ),
+                      const Spacer(
+                        flex: 1,
+                      ),
+                      if (img != null)
+                        Image.file(
+                          img!,
+                          width: 247,
+                          height: 150,
+                          fit: BoxFit.cover,
+                        )
+                      else
+                        const Icon(
+                          Icons.drive_folder_upload,
+                          size: 150,
+                        ),
+                    ],
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -335,91 +375,168 @@ class _HazobPageState extends State<HazobPage> {
                           MaterialStateProperty.all<Size>(const Size(200, 50)),
                     ),
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        final hazob1 = Hazob(
-                          tglLaporan: dateNow,
-                          namaPengamat: _namaPengamat.text,
-                          departemen: _departemen.text,
-                          positivCek: _keadaanAman,
-                          perlindunganDiri: perlindunganDiriList.toString(),
-                          perlengkapanKerja: perlengkapanKerjaList.toString(),
-                          prosedurKerja: prosedurkerjaList.toString(),
-                          penyimapanan: penyimpananList.toString(),
-                          suasanaLingkungan: suasanaLingkunganList.toString(),
-                          posisiKerja: prosedurkerjaList.toString(),
-                          akses: aksesList.toString(),
-                          kegiatanDiamati: _kegiatanDiamatiController.text,
-                          tindakanAmanDiamati: _tindakanPositifController.text,
-                          tindakanNegatifDiamati:
-                              _tindakanNegatifController.text,
-                          potensiBahaya: _potensiBahayaController.text,
-                          perbaikanDilakukan:
-                              _perbaikanDilakukanController.text,
-                          perbaikanDiusulkan:
-                              _perbaikanDiusulkanController.text,
-                          tanggapan: _tanggapanController.text,
-                          apakahPerlu: _apakahPerluController.text,
-                        );
+                      setState(() {
+                        if (_formKey.currentState!.validate()) {
+                          if (img != null) {
+                            hazob1 = Hazob(
+                              tglLaporan: dateNow,
+                              namaPengamat: _namaPengamat.text,
+                              departemen: _departemen.text,
+                              positivCek: _keadaanAman,
+                              perlindunganDiri: perlindunganDiriList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              perlengkapanKerja: perlengkapanKerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              prosedurKerja: prosedurkerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              penyimapanan: penyimpananList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              suasanaLingkungan: suasanaLingkunganList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              posisiKerja: prosedurkerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              akses: aksesList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              kegiatanDiamati: _kegiatanDiamatiController.text,
+                              tindakanAmanDiamati:
+                                  _tindakanPositifController.text,
+                              tindakanNegatifDiamati:
+                                  _tindakanNegatifController.text,
+                              potensiBahaya: _potensiBahayaController.text,
+                              perbaikanDilakukan:
+                                  _perbaikanDilakukanController.text,
+                              perbaikanDiusulkan:
+                                  _perbaikanDiusulkanController.text,
+                              tanggapan: _tanggapanController.text,
+                              apakahPerlu: _apakahPerluController.text,
+                              lampiranFoto:
+                                  "https://drive.google.com/file/d/${detailImg?['id'].toString()}/view?usp=sharing",
+                            );
+                          } else {
+                            hazob1 = Hazob(
+                              tglLaporan: dateNow,
+                              namaPengamat: _namaPengamat.text,
+                              departemen: _departemen.text,
+                              positivCek: _keadaanAman,
+                              perlindunganDiri: perlindunganDiriList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              perlengkapanKerja: perlengkapanKerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              prosedurKerja: prosedurkerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              penyimapanan: penyimpananList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              suasanaLingkungan: suasanaLingkunganList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              posisiKerja: prosedurkerjaList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              akses: aksesList
+                                  .toString()
+                                  .replaceAll('[', '')
+                                  .replaceAll(']', ''),
+                              kegiatanDiamati: _kegiatanDiamatiController.text,
+                              tindakanAmanDiamati:
+                                  _tindakanPositifController.text,
+                              tindakanNegatifDiamati:
+                                  _tindakanNegatifController.text,
+                              potensiBahaya: _potensiBahayaController.text,
+                              perbaikanDilakukan:
+                                  _perbaikanDilakukanController.text,
+                              perbaikanDiusulkan:
+                                  _perbaikanDiusulkanController.text,
+                              tanggapan: _tanggapanController.text,
+                              apakahPerlu: _apakahPerluController.text,
+                              lampiranFoto: "Tidak Melampirkan Foto",
+                            );
+                          }
 
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text(
-                              'Hazob Submission',
-                              textAlign: TextAlign.center,
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text(
+                                'Hazob Submission',
+                                textAlign: TextAlign.center,
+                              ),
+                              content: const Text(
+                                  'Apakah anda yakin mengirim data ini ?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(color: dangerColor),
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                TextButton(
+                                  onPressed: () async {
+                                    await HazobSheetsApi.insert(
+                                        [hazob1.toJson()]);
+
+                                    aksesList.clear();
+                                    penyimpananList.clear();
+                                    perlindunganDiriList.clear();
+                                    suasanaLingkunganList.clear();
+                                    perlengkapanKerjaList.clear();
+                                    prosedurkerjaList.clear();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Processing Data')),
+                                    );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const ThankYou(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "SUBMIT",
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ),
+                              ],
                             ),
-                            content: const Text(
-                                'Apakah anda yakin mengirim data ini ?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  'Cancel',
-                                  style: TextStyle(color: dangerColor),
-                                ),
-                              ),
-                              const SizedBox(width: 30),
-                              TextButton(
-                                onPressed: () async {
-                                  await HazobSheetsApi.insert(
-                                      [hazob1.toJson()]);
-
-                                  aksesList.clear();
-                                  penyimpananList.clear();
-                                  perlindunganDiriList.clear();
-                                  suasanaLingkunganList.clear();
-                                  perlengkapanKerjaList.clear();
-                                  prosedurkerjaList.clear();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Processing Data')),
-                                  );
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          const ThankYou(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  "SUBMIT",
-                                  style: TextStyle(color: Colors.green),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("Ada data yang kosong")));
-                      }
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Ada data yang kosong")));
+                        }
+                      });
                     },
                     child: const Text("Submit"),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -665,7 +782,7 @@ class _HazobPageState extends State<HazobPage> {
       ),
       TextField(
         controller: _apakahPerluController,
-        maxLines: 6,
+        maxLines: 1,
         cursorColor: darkBlueColor,
         decoration: InputDecoration(
           floatingLabelAlignment: FloatingLabelAlignment.center,

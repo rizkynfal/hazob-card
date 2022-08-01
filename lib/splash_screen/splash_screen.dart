@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hazob_card_app/hazob_form/hazob_page.dart';
 import 'package:hazob_card_app/routes/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _SplashScreenState extends State<_SplashScreen> {
   @override
   void initState() {
     super.initState();
+
     _loadSplashScreen();
   }
 
@@ -82,18 +84,27 @@ class _SplashScreenState extends State<_SplashScreen> {
                     Container(
                       height: 10,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "1.0.0+2",
-                          style: TextStyle(
-                            color: fontMainColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+                    FutureBuilder<PackageInfo>(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Version: ${snapshot.data!.version}',
+                                style: TextStyle(
+                                  color: fontMainColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const Text("Null");
+                        }
+                      },
                     )
                   ],
                 ))
