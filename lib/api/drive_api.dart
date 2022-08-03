@@ -7,8 +7,6 @@ import 'package:googleapis_auth/auth_io.dart' as auth;
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-Map<String, dynamic>? detailImg;
-
 class GoogleDrive {
   late ga.FileList tes;
   // ignore: prefer_const_declarations
@@ -26,7 +24,6 @@ class GoogleDrive {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hazob-hse-2022%40new-hazob-2022.iam.gserviceaccount.com"
 }
 
-
 ''');
 
   static const driveScope = ['https://www.googleapis.com/auth/drive'];
@@ -41,7 +38,7 @@ class GoogleDrive {
 
   Future<String?> _getFolderId(ga.DriveApi driveApi) async {
     const mimeType = "application/vnd.google-apps.folder";
-    String folderName = "Hazob Foto";
+    String folderName = "Hazob pict";
 
     try {
       final found = await driveApi.files.list(
@@ -70,7 +67,7 @@ class GoogleDrive {
     }
   }
 
-  Future<void> uploadFile(File file) async {
+  Future<String> uploadFile(File file) async {
     var client = await getAccessCredentials();
     ga.DriveApi driveApi = ga.DriveApi(client);
     final folderId = await _getFolderId(driveApi);
@@ -81,6 +78,7 @@ class GoogleDrive {
           ..name =
               "${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}.png",
         uploadMedia: ga.Media(file.openRead(), file.lengthSync()));
-    detailImg = response.toJson();
+    Map<String, dynamic> detailImg = response.toJson();
+    return detailImg['id'].toString();
   }
 }

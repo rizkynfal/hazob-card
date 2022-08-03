@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_declarations
 
-
 class HazobFields {
   static final String tglLaporan = 'Tanggal';
   static final String namaPengamat = 'Nama Pengamat';
@@ -27,8 +26,8 @@ class HazobFields {
   static final String tanggapan =
       'Tanggapan dari yang diamati atas usulan perbaikan';
   static final String apakahPerlu = 'Apakah diperlukan tindakan lanjutan';
+  static final String statusCase = 'Status Hazob';
   static final String lampiranFoto = 'Lampiran Foto';
-
 
   static List<String> getFields() => [
         tglLaporan,
@@ -50,6 +49,7 @@ class HazobFields {
         perbaikanDiusulkan,
         tanggapan,
         apakahPerlu,
+        statusCase,
         lampiranFoto
       ];
 }
@@ -75,30 +75,31 @@ class Hazob {
   final String perbaikanDiusulkan;
   final String tanggapan;
   final String apakahPerlu;
+  final String statusCase;
   final String lampiranFoto;
 
-  const Hazob({
-    required this.tglLaporan,
-    required this.namaPengamat,
-    required this.departemen,
-    required this.positivCek,
-    required this.perlindunganDiri,
-    required this.perlengkapanKerja,
-    required this.prosedurKerja,
-    required this.penyimapanan,
-    required this.suasanaLingkungan,
-    required this.posisiKerja,
-    required this.akses,
-    required this.kegiatanDiamati,
-    required this.tindakanAmanDiamati,
-    required this.tindakanNegatifDiamati,
-    required this.potensiBahaya,
-    required this.perbaikanDilakukan,
-    required this.perbaikanDiusulkan,
-    required this.tanggapan,
-    required this.apakahPerlu,
-    required this.lampiranFoto
-  });
+  const Hazob(
+      {required this.tglLaporan,
+      required this.namaPengamat,
+      required this.departemen,
+      required this.positivCek,
+      required this.perlindunganDiri,
+      required this.perlengkapanKerja,
+      required this.prosedurKerja,
+      required this.penyimapanan,
+      required this.suasanaLingkungan,
+      required this.posisiKerja,
+      required this.akses,
+      required this.kegiatanDiamati,
+      required this.tindakanAmanDiamati,
+      required this.tindakanNegatifDiamati,
+      required this.potensiBahaya,
+      required this.perbaikanDilakukan,
+      required this.perbaikanDiusulkan,
+      required this.tanggapan,
+      required this.apakahPerlu,
+      required this.statusCase,
+      required this.lampiranFoto});
   Map<String, dynamic> toJson() => {
         HazobFields.tglLaporan: tglLaporan,
         HazobFields.namaPengamat: namaPengamat,
@@ -119,8 +120,7 @@ class Hazob {
         HazobFields.perbaikanDiusulkan: perbaikanDiusulkan,
         HazobFields.tanggapan: tanggapan,
         HazobFields.apakahPerlu: apakahPerlu,
+        HazobFields.statusCase : statusCase,
         HazobFields.lampiranFoto: lampiranFoto,
       };
 }
-
-
