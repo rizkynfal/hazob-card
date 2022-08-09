@@ -74,17 +74,15 @@ class _HazobPageState extends State<HazobPage> {
   late bool _keadaanAman = false;
   bool isLoading = false;
   String statusCase = "Open";
-
+  late String foto;
+  late Future<String> linkFoto;
   @override
   void initState() {
     super.initState();
     drive.getAccessCredentials();
-    dateNow;
     _namaPengamat = TextEditingController();
     _departemen = TextEditingController();
   }
-
-  var linkFoto;
 
   Status? __status = Status.Iya;
 
@@ -108,14 +106,6 @@ class _HazobPageState extends State<HazobPage> {
               backgroundColor: Colors.blue,
               onTap: () async {
                 await getImage(ImageSource.gallery);
-                if (img != null) {
-                  await drive.uploadFile(img!);
-                  drive.uploadFile(img!).then((String result) {
-                    setState(() {
-                      linkFoto = result;
-                    });
-                  });
-                }
               }),
           SpeedDialChild(
               backgroundColor: Colors.pink,
@@ -123,14 +113,6 @@ class _HazobPageState extends State<HazobPage> {
               label: 'Camera',
               onTap: () async {
                 await getImage(ImageSource.camera);
-                if (img != null) {
-                  await drive.uploadFile(img!);
-                  drive.uploadFile(img!).then((String result) {
-                    setState(() {
-                      linkFoto = result;
-                    });
-                  });
-                }
               }),
         ],
       ),
@@ -375,7 +357,6 @@ class _HazobPageState extends State<HazobPage> {
                         Image.file(
                           img!,
                           width: 247,
-                          height: 150,
                           fit: BoxFit.cover,
                         )
                       else
@@ -394,229 +375,227 @@ class _HazobPageState extends State<HazobPage> {
                           MaterialStateProperty.all<Size>(const Size(200, 50)),
                     ),
                     onPressed: () async {
-                      setState(() {
-                        if (_formKey.currentState!.validate()) {
-                          if (img != null) {
-                            Future.delayed(const Duration(seconds: 3), () {
-                              hazob1 = Hazob(
-                                tglLaporan: dateNow,
-                                namaPengamat: _namaPengamat.text,
-                                departemen: _departemen.text,
-                                positivCek: _keadaanAman,
-                                perlindunganDiri: perlindunganDiriList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                perlengkapanKerja: perlengkapanKerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                prosedurKerja: prosedurkerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                penyimapanan: penyimpananList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                suasanaLingkungan: suasanaLingkunganList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                posisiKerja: prosedurkerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                akses: aksesList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                kegiatanDiamati:
-                                    _kegiatanDiamatiController.text,
-                                tindakanAmanDiamati:
-                                    _tindakanPositifController.text,
-                                tindakanNegatifDiamati:
-                                    _tindakanNegatifController.text,
-                                potensiBahaya: _potensiBahayaController.text,
-                                perbaikanDilakukan:
-                                    _perbaikanDilakukanController.text,
-                                perbaikanDiusulkan:
-                                    _perbaikanDiusulkanController.text,
-                                tanggapan: _tanggapanController.text,
-                                apakahPerlu: _apakahPerluController.text,
-                                statusCase: statusCase,
-                                lampiranFoto:
-                                    "https://drive.google.com/file/d/$linkFoto/view?usp=sharing",
-                              );
-
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text(
-                                    'Hazob Submission',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  content: const Text(
-                                      'Apakah anda yakin mengirim data ini ?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(color: dangerColor),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 30),
-                                    TextButton(
-                                      onPressed: () async {
-                                        await HazobSheetsApi.insert(
-                                            [hazob1.toJson()]);
-
-                                        aksesList.clear();
-                                        penyimpananList.clear();
-                                        perlindunganDiriList.clear();
-                                        suasanaLingkunganList.clear();
-                                        perlengkapanKerjaList.clear();
-                                        prosedurkerjaList.clear();
-                                        if (linkFoto != null) {
-                                          linkFoto = "";
-                                        }
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Processing Data')),
-                                        );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const ThankYou(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        "SUBMIT",
-                                        style: TextStyle(color: Colors.green),
-                                      ),
-                                    ),
-                                  ],
+                      if (_formKey.currentState!.validate()) {
+                        Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(top: 20),
+                            child: const CircularProgressIndicator());
+                        if (img != null) {
+                          Future.delayed((const Duration(seconds: 4)), () {
+                            linkFoto = drive.uploadFile(img!);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text(
+                                  'Hazob Submission',
+                                  textAlign: TextAlign.center,
                                 ),
-                              );
-                            });
-                          } else {
-                            Future.delayed(const Duration(seconds: 3), () {
-                              hazob1 = Hazob(
-                                tglLaporan: dateNow,
-                                namaPengamat: _namaPengamat.text,
-                                departemen: _departemen.text,
-                                positivCek: _keadaanAman,
-                                perlindunganDiri: perlindunganDiriList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                perlengkapanKerja: perlengkapanKerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                prosedurKerja: prosedurkerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                penyimapanan: penyimpananList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                suasanaLingkungan: suasanaLingkunganList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                posisiKerja: prosedurkerjaList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                akses: aksesList
-                                    .toString()
-                                    .replaceAll('[', '')
-                                    .replaceAll(']', ''),
-                                kegiatanDiamati:
-                                    _kegiatanDiamatiController.text,
-                                tindakanAmanDiamati:
-                                    _tindakanPositifController.text,
-                                tindakanNegatifDiamati:
-                                    _tindakanNegatifController.text,
-                                potensiBahaya: _potensiBahayaController.text,
-                                perbaikanDilakukan:
-                                    _perbaikanDilakukanController.text,
-                                perbaikanDiusulkan:
-                                    _perbaikanDiusulkanController.text,
-                                tanggapan: _tanggapanController.text,
-                                apakahPerlu: _apakahPerluController.text,
-                                statusCase: statusCase,
-                                lampiranFoto: "Tidak Melampirkan Foto",
-                              );
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text(
-                                    'Hazob Submission',
-                                    textAlign: TextAlign.center,
+                                content: const Text(
+                                    'Apakah anda yakin mengirim data ini ?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'Cancel',
+                                      style: TextStyle(color: dangerColor),
+                                    ),
                                   ),
-                                  content: const Text(
-                                      'Apakah anda yakin mengirim data ini ?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(color: dangerColor),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 30),
-                                    TextButton(
-                                      onPressed: () async {
-                                        await HazobSheetsApi.insert(
-                                            [hazob1.toJson()]);
-
-                                        aksesList.clear();
-                                        penyimpananList.clear();
-                                        perlindunganDiriList.clear();
-                                        suasanaLingkunganList.clear();
-                                        perlengkapanKerjaList.clear();
-                                        prosedurkerjaList.clear();
-
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text('Processing Data')),
+                                  const SizedBox(width: 30),
+                                  TextButton(
+                                    onPressed: () async {
+                                      setState(() {
+                                        hazob1 = Hazob(
+                                          tglLaporan: dateNow,
+                                          namaPengamat: _namaPengamat.text,
+                                          departemen: _departemen.text,
+                                          positivCek: _keadaanAman,
+                                          perlindunganDiri: perlindunganDiriList
+                                              .toString()
+                                              .replaceAll('[', '')
+                                              .replaceAll(']', ''),
+                                          perlengkapanKerja:
+                                              perlengkapanKerjaList
+                                                  .toString()
+                                                  .replaceAll('[', '')
+                                                  .replaceAll(']', ''),
+                                          prosedurKerja: prosedurkerjaList
+                                              .toString()
+                                              .replaceAll('[', '')
+                                              .replaceAll(']', ''),
+                                          penyimapanan: penyimpananList
+                                              .toString()
+                                              .replaceAll('[', '')
+                                              .replaceAll(']', ''),
+                                          suasanaLingkungan:
+                                              suasanaLingkunganList
+                                                  .toString()
+                                                  .replaceAll('[', '')
+                                                  .replaceAll(']', ''),
+                                          posisiKerja: prosedurkerjaList
+                                              .toString()
+                                              .replaceAll('[', '')
+                                              .replaceAll(']', ''),
+                                          akses: aksesList
+                                              .toString()
+                                              .replaceAll('[', '')
+                                              .replaceAll(']', ''),
+                                          kegiatanDiamati:
+                                              _kegiatanDiamatiController.text,
+                                          tindakanAmanDiamati:
+                                              _tindakanPositifController.text,
+                                          tindakanNegatifDiamati:
+                                              _tindakanNegatifController.text,
+                                          potensiBahaya:
+                                              _potensiBahayaController.text,
+                                          perbaikanDilakukan:
+                                              _perbaikanDilakukanController
+                                                  .text,
+                                          perbaikanDiusulkan:
+                                              _perbaikanDiusulkanController
+                                                  .text,
+                                          tanggapan: _tanggapanController.text,
+                                          apakahPerlu:
+                                              _apakahPerluController.text,
+                                          statusCase: statusCase,
+                                          lampiranFoto:
+                                              "https://drive.google.com/file/d/$foto/view?usp=sharing",
                                         );
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const ThankYou(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text(
-                                        "SUBMIT",
-                                        style: TextStyle(color: Colors.green),
-                                      ),
+                                      });
+
+                                      HazobSheetsApi.insert([hazob1.toJson()]);
+                                      aksesList.clear();
+                                      penyimpananList.clear();
+                                      perlindunganDiriList.clear();
+                                      suasanaLingkunganList.clear();
+                                      perlengkapanKerjaList.clear();
+                                      prosedurkerjaList.clear();
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              const ThankYou(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "SUBMIT",
+                                      style: TextStyle(color: Colors.green),
                                     ),
-                                  ],
-                                ),
-                              );
-                            });
-                          }
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Ada data yang kosong")));
+                          hazob1 = Hazob(
+                            tglLaporan: dateNow,
+                            namaPengamat: _namaPengamat.text,
+                            departemen: _departemen.text,
+                            positivCek: _keadaanAman,
+                            perlindunganDiri: perlindunganDiriList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            perlengkapanKerja: perlengkapanKerjaList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            prosedurKerja: prosedurkerjaList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            penyimapanan: penyimpananList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            suasanaLingkungan: suasanaLingkunganList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            posisiKerja: prosedurkerjaList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            akses: aksesList
+                                .toString()
+                                .replaceAll('[', '')
+                                .replaceAll(']', ''),
+                            kegiatanDiamati: _kegiatanDiamatiController.text,
+                            tindakanAmanDiamati:
+                                _tindakanPositifController.text,
+                            tindakanNegatifDiamati:
+                                _tindakanNegatifController.text,
+                            potensiBahaya: _potensiBahayaController.text,
+                            perbaikanDilakukan:
+                                _perbaikanDilakukanController.text,
+                            perbaikanDiusulkan:
+                                _perbaikanDiusulkanController.text,
+                            tanggapan: _tanggapanController.text,
+                            apakahPerlu: _apakahPerluController.text,
+                            statusCase: statusCase,
+                            lampiranFoto: "Tidak Melampirkan Foto",
+                          );
+                          showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text(
+                                'Hazob Submission',
+                                textAlign: TextAlign.center,
+                              ),
+                              content: const Text(
+                                  'Apakah anda yakin mengirim data ini ?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(color: dangerColor),
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                TextButton(
+                                  onPressed: () async {
+                                    await HazobSheetsApi.insert(
+                                        [hazob1.toJson()]);
+
+                                    aksesList.clear();
+                                    penyimpananList.clear();
+                                    perlindunganDiriList.clear();
+                                    suasanaLingkunganList.clear();
+                                    perlengkapanKerjaList.clear();
+                                    prosedurkerjaList.clear();
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Processing Data')),
+                                    );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            const ThankYou(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    "SUBMIT",
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                         }
-                      });
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Ada data yang kosong")));
+                      }
                     },
                     child: const Text("Submit"),
                   ),
